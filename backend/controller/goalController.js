@@ -1,6 +1,19 @@
 const asyncHandler = require('express-async-handler');
 const Goal = require('../models/goalModel');
 
+/*
+	express-async-handler
+	npm desc: Simple middleware for handling exceptions inside of async express routes and passing them to your express error handlers.
+	
+	when we use mongoose in each of these functions/routes to interact with the db we receive a Promise
+	so we're going to use async await
+	by default if you use .then you'll need .catch
+	async/await we would use try/catch
+	if we don't want to use try/catch and want to use our errorHandler instead
+	we can use a package called express-async-handler
+	then you just wrap each function/route with asyncHandler
+*/
+
 // @desc    Get goals
 // @route   GET /api/goals
 // @access  Private

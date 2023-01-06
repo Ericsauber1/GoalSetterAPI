@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', 'true');
 
+/*
+	mongoose
+	npm desc: Mongoose is a MongoDB object modeling tool designed to work in an asynchronous environment. Mongoose supports Node.js and Deno (alpha).
+*/
+
 const connectDB = async () => {
 	try {
 		const conn = await mongoose.connect(process.env.MONGO_URI);
