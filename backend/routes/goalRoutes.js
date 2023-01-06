@@ -5,7 +5,7 @@ const {
 	setGoal,
 	updateGoal,
 	deleteGoal,
-} = require('../controller/goalController');
+} = require('../controllers/goalController');
 
 // being fancy, you can combine different request types if its the same route
 router.route('/').get(getGoals).post(setGoal);
