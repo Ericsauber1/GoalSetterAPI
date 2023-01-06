@@ -21,8 +21,9 @@ const userSchema = mongoose.Schema(
 	}
 );
 
-// Users is the collection name
-// It converts it to lower case
+// User is the collection name
+// It converts it to lower case (and also adds an s)
+// it even does Bus -> buses
 // data is found at: 
 // goalsetter > users
-module.exports = mongoose.model('Users', userSchema);
+module.exports = mongoose.model('User', userSchema);
