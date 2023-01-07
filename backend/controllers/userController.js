@@ -27,6 +27,7 @@ const registerUser = asyncHandler(async (req, res) => {
 	const hashedPassword = await bcrypt.hash(password, salt);
 
 	// Create user
+	// this is case sensitive it turns out.. john@gmail.com !== John@gmail.com
 	const user = await User.create({
 		name,
 		email,
@@ -38,6 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
 			_id: user._id,
 			name: user.name,
 			email: user.email,
+			token: generateToken(user._id),
 		});
 	} else {
 		res.status(400);
@@ -49,15 +51,39 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/login
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
-	res.json({ message: 'Login user' });
+	const { email, password } = req.body;
+
+	// Check for user email
+	const user = await User.findOne({ email });
+
+	if (user && (await bcrypt.compare(password, user.password))) {
+		res.json({
+			_id: user._id,
+			name: user.name,
+			email: user.email,
+			token: generateToken(user._id),
+		});
+	} else {
+		res.status(400);
+		throw new Error('Invalid credentials');
+	}
 });
 
 // @desc    Get user data
 // @route   GET /api/users/me
-// @access  Public
+// @access  Private
 const getMe = asyncHandler(async (req, res) => {
-	res.json({ message: 'User data display' });
+	res.status(200).json({
+		id: req.user.id,
+		name: req.user.name,
+		email: req.user.email,
+	});
 });
+
+// Generate JWT
+const generateToken = (id) => {
+	return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+};
 
 module.exports = {
 	registerUser,
